@@ -28,10 +28,10 @@
   
   + | 类型  |   存储需求    |   取值范围   |
     | :---: | :-----------: | :----------: |
-    |  int  | 4字节（32位） | -2^31~ 2^31  |
+    | byte  | 1字节（8位）  |  -2^7 ~ 2^7  |
     | short | 2字节（16位） | -2^15 ~ 2^15 |
-    | long  | 8字节（64位） | -2^63 ~ 2^63 |
-  | byte  | 1字节（8位）  |  -2^7 ~ 2^7  |
+    |  int  | 4字节（32位） | -2^31~ 2^31  |
+  | long  | 8字节（64位） | -2^63 ~ 2^63 |
   
 + #### 3.3.2 浮点类型
 
@@ -336,10 +336,10 @@
 
 + #### 3.7.1 读取输入
 
-  + 要使用与“标准输入流”System.i关联的Scanner对象
+  + 要使用与“标准输入流”System.in关联的Scanner对象
 
   + ```java
-    Scanner in = new Scanner(String.in);
+    Scanner in = new Scanner(System.in);
     //假设输入 Li Jiaqi
     String name = in.nextLine();//Li Jiaqi
     String name = in.next();//Li
