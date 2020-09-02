@@ -378,5 +378,163 @@
     System.out.printf("%s %tB %<te, %<tY","date:",new Date());//<意为使用上一个的索引
     ```
 
-  + 
 
+## 3.8 控制流程
+
++ #### 3.8.1 块作用域
+
+  + 块（即复合语句）是指由若干条Java语句组成的语句，并用一对大括号{ }括起来，块确定了变量的作用域，一个块可以嵌套在另一个块中。
+  + 不能在嵌套的两个块中声明同名变量
+
++ #### 3.8.2 条件语句
+
+  + ```java
+    if(condition){
+       	statement1; 
+    }else{
+        statement2;
+    }
+    ```
+
++ #### 3.8.3 循环
+
+  + ```java
+    while(condition){ statement; }
+    do{ statement; } while(condition);
+    ```
+
++ #### 3.8.4 确定循环
+
+  + 一个规则：for语句的三个部分应该对同一计数器变量进行 初始化 检测 更新 
+
+  + 可以在for语句内部定义同名变量
+
+  + ```java
+    for(int i=0;i<10;i++){
+        for(int i=1;i<111;i++) // ok
+    }
+    ```
+
++ #### 3.8.5 多重选择：switch语句
+
+  + ```java
+    switch(value){
+        case 1:...... break;
+        case 2:...... break;
+            .
+                .
+                	.
+    	}
+    ```
+
+  + case标签可以是char、byte、short、或int的常量表达式，也可以是枚举类型，还可以是字符串字面量（双引号引住的）
+
++ #### 3.8.6 中断控制流程语句
+
+  + 不带标签的break：推出当前循环块
+
+  + 带标签break：推出整个标签块
+
+  + ```java
+            label:{
+                while(a<10)
+                    while(a<100){
+                        if(a==2){
+                            break label;
+                        }
+                    }
+            }
+    ```
+
+  + continue语句可以跳过循环体的剩余部分
+
+  + ```java
+    while(sum < goal){
+        n = in.nextInt();
+        if(n<0) continue;
+        sum+=n;	//如果n小于0 这一条不执行 直接跳过
+    }
+    ```
+
+## 3.9 大数
+
++ 如果基本整数和浮点数精度不能够满足需求，可以使用java.math的BigInteger和BigDecimal
+
++ ```java
+  BigInteger a = BigInteger.valueOf(100);
+  BigInteger reallyBig = new BigInteger("9123812734098712309471230947109238759018");
+  BigInteger d = c.multply(b.add(BigInteger.valueOf(2))); d = c 8 (b + 2)
+  ```
+
++ 不能用常见的+-处理大数 需要使用大数类中的add和multiply方法
+
+## 3.10  数组
+
++ #### 3.10.1声明数组
+
++ ```java
+  int[] a = new int[100];//or var a = new int[100];
+  int[] a = {1,2,3,4,5};//不需要new和指定大小空间
+  int[] a = new int[]{1,2,3,4,5};
+  int[] zero = new int[0];//长度为0的数组 ！=null
+  ```
+
+  + 如果需要经常扩展数组的大小，则需要用数组列表array list
+
++ #### 3.10.2 访问数组元素
+
+  + 初始化时，int初始化为0 boolean初始化为false 对象数组初始化为特殊值null 比如String name[] = new String[10]，会创建一个包含十个字符串的数组，所有字符串都为null
+
++ #### 3.10.3 for each循环
+
+  + ```java
+    for(int element:a){
+        System.out.print(" "+element);//for each element in a
+    }
+    ```
+
+  + for each是遍历每一个元素 而不是下标
+
+  + 如果在for each中做出修改元素的操作，元素本身是不会被修改的
+
+  + 另一种简单的方法打印就是用Arrays.toString(a);
+
+  + ```java
+    int[] a ={1,2,3,4,5,6,7};
+    System.out.println(Arrays.toString(a)); //[1, 2, 3, 4, 5, 6, 7]
+    ```
+
++ #### 3.10.4 数组拷贝
+
+  + 如果将一个数组拷贝到另一个数组变量，此时两个数组变量指向同一个数组
+
+  + ```java
+    int[] a ={1,2,3,4,5,6,7};
+    int[] b = a;
+    a[0]=3; //此时b[0]=3;
+    ```
+
+  + 如果要拷贝到一个新数组 就需要使用Arrays类的copyOf方法
+
+  + ```java
+    int[] a ={1,2,3,4,5,6,7};
+    int[] b = Arrays.copyOf(a,a.length);//后面一个形参意思是新的数组的大小长度
+    ```
+
++ #### 3.10.6 数组排序
+
+  + Arrays.sort(a); 采用优化的快速排序
+
+  + Math.Random()返回一个 [0,1)之间的数 包括0不包括1
+
+  + 可以用foreach打印一个二维数组 也可以用System.ou.println(Arrays.deepToString(a));
+
+  + ```java
+    int[][] a = {{1,2,3},
+                {4,5,6},
+                {7,8,9}};
+    System.out.println(Arrays.toString(a));//[[I@1b6d3586, [I@4554617c, [I@74a14482]
+    System.out.println(Arrays.deepToString(a));//[[1, 2, 3], [4, 5, 6], [7, 8, 9]]
+    ```
+
+    
