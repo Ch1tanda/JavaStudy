@@ -1,0 +1,230 @@
+## 6.1 接口 Interface
+
++ #### 6.1.1 接口的概念
+
+  + 在Java语言中，接口不是类，而是对希望符合这个接口的类的一组<u>需求</u>
+
+  + 接口中所有方法都是public方法，因此不用提供关键字public
+
+  + 接口绝对不会有实例字段
+
+  + 接口绝对不会有实例
+
+  + 接口中的方法被隐式添加public abstract
+
+  + 变量会隐式的添加public static final
+
+  + ```java
+    public interfance Comparable<T>{
+        int compareTo(T other);//
+    }
+    
+    public class Employee implements Comparable{
+        public int compareTo(Object otherObject){
+        }
+    } 
+    ```
+
+  + 一个类实现了一个接口后要完善接口中的所有方法
+
+  + 如果要让一个类实现排序，就必须让他实现CompareTo方法
+
+  + 必须要用接口的原因：Java是强类型语言，必须要检查到某个方法必须存在，比如compareTo 只要实现了Comparable接口 就一定有这个方法
+
+  + 因为Array.sort方法 必须要类有一个功能 CompareTo 不然用不了
+
++ #### 6.1.2 接口的属性
+  + 接口不是类，因此不能实例化
+
+  + 虽然不能实例化，但是和抽象类一样，可以声明一个接口变量，但是它只能引用一个实现了这个接口的类对象
+
+  + 接口也可以拓展，使用extends声明
+
+  + 接口不能包含实例字段，但是可以包含常量，并且所有的字段都会被自动声明为public static final 方法也是，会被声明为public
+
+  + 就是说所有接口中的字段都是常量静态字段
+
+  + 实现多个接口如下：
+
+  + ```java
+    class Employee implements interface1,interfece2{}
+    ```
+
++ #### 6.1.3 接口与抽象类
+
+  + 每个类只能extends一个类，但是可以implements多个接口，这就是抽象类和接口的不同
+
++ #### 6.1.4 静态和私有方法 
+
+  + Java8中允许接口增加静态方法
+  + Java9中允许接口方法为private
+
++ #### 6.1.5 接口的默认方法
+
+  + 可以为接口提供一个默认实现，使用default修饰符标记这样的方法
+
+  + ```java
+    public interface Comparable<T>{
+        default int compareTo(T other){
+            return 0;
+        }
+    }
+    ```
+
+  + 作用，假设很久以前提供了一个类Big 它实现了 Collection接口，但是现在，要给Collection接口增加一个新的stream方法，如果这个方法不是默认方法的话，Big类将不能编译，因为没有实现所有的接口中的方法。假设不编译，而是使用包含这个类的JAR文件，这个类仍然可以加载，尽管没有新方法。不过，如果在程序上调用stream方法，将会出现ERROR，如果把steam方法设置为默认default方法，将解决如上脸的两个问题
+
+  + 即使没有override默认方法，也可以从实现它的子类中调用
+
++ #### 6.1.6 解决默认方法冲突
+
+  + 超类与接口-超类优先：如果超类提供了一个具体方法，同名且有相同参数类型的**接口中的默认方法**会被忽略
+
+  + 接口与接口冲突：一个接口提供了一个默认方法，另一个接口提供了一个**同名且参数类型相同的默认方法**，就必须在类中覆盖这个方法来解决冲突
+
+  + ```java
+    interface person{
+        String getName();
+    }
+    interface named{
+        String getName();
+    }
+    class waibibabo inplements person,named{
+        public String getName(){...}//没有这个会报错
+    }
+    ```
+
+  + 类优先：如果一个类继承了一个超类并且实现了一个接口，在这个超类和接口中有一个同名且参数相同的方法，接口中的方法会被忽略
+
+  + 为此 不要让一个默认方法重新定义Object类中的方法
+
++ #### 6.1.7 接口与回调
+
++ #### 6.1.8 Comparator接口
+
+  + Array.sort的另一个重载方法接受两个参数，一个数组和一个比较器comparator
+
+  + ```java
+    public class LengthComparator<T> implements Comparator<String> {
+        @Override
+        public int compare(String o1, String o2) {
+             return o1.length()-o2.length();
+        }
+    }
+    String[] a = {"mmmm","mmm"};
+    Arrays.sort(a,new LengthComparator<String>());
+    System.out.println(Arrays.deepToString(a));//"mmm","mmmm"
+    ```
+
+  + String自带的compareTo是根据字典比较的
+
++ #### 6.1.9 对象克隆 Cloneable接口 以后再看
+
+## 6.2 lambda表达式
+
++ #### 6.2.1  为什么引入lambda表达式
+
+  + lambda是一个可传递的代码块，可以在以后使用一次或者多次
+
++ #### 6.2.2 lambda表达式语法
+
+  + 参数，箭头->，和一个表达式
+
+  + ```java
+    (String first,String second)
+    	->first.length() - second.length()
+    ```
+
+  + 如果一个表达式无法计算完毕，也可以把表达式更换成一个{}大括号括住的代码块，分别对不同的情况返回对应的值
+
+  + 即使lambda表达式没有参数，仍然要提供空括号，就像无参方法一样
+
+  + 如果可以推导出一个lambda表达式的参数类型，就可以忽略类型，和var的原理一样
+
+  + 无需指定lambda表达式的返回类型，它会自动推导出
+
+  + 某些情况下，如果lambda表达式中一个分支返回值，另一个分支不返回值，就会是不合法的
+
+  + ```java
+    (int x)->{if(x>=0)return 1;}//不合法
+    ```
+
+  + ```java
+    Arrays.sort(aStringArray,(first,second)->first.length()-second.length())
+    ```
+
++ #### 6.2.3 函数式接口
+
+  + 对于**只有一个抽象方法**的**接口**，需要这种接口的对象时，可以提供一个lambda表达式。这种接口称为函数式接口
+  + 在Java中，对lambda能做的的只有转化为函数式接口
+
++ #### 6.2.4 方法引用
+
+  + 一个方法引用，它指示编译器生成一个函数式接口的实例，覆盖整个接口的抽象方法来调用给定的方法
+  + 要用：：运算符分隔方法名与对象或类名
+    + object::instanceMethod
+    + Class::instanceMethod
+    + Class::staticMethod
+  + 只有在lambda表达式的体只调用一个方法而不做其他操作时，才能把lambda表达式重写为方法引用
+    + 例:s -> s.length()==0 本身调用了length方法，但是有比较，就不能调用了
+    + 可以在方法中使用this参数
+
++ #### 以后再回来看lambda
+
+## 6.3 内部类 inner class
+
++ 内部类是定义在另一个类中的类
+
++ 原因
+
+  + 内部类可以对同一个包中的其他类隐藏
+  + 内部类方法可以访问定义这个类的作用域中的数据，包括私有数据
+
++ #### 6.3.1 使用内部类访问对象状态
+
+  + 内部类可以声明为私有，常规类可以有protected和public
+  + 内部类对象有一个外围内的引用，可以直接修改使用外围类的对象
+
++ #### 6.3.2 内部类的特殊语法规则
+
+  + 内部类的所有静态字段属性必须是final，因为每个外围类的实例都可能会改变内部类的静态字段
+  + 内部类可以有static方法，只能访问外围内的静态字段和方法
+
++ #### 6.3.3 内部类是否有用、必要和安全
+
++ #### 6.3.4 局部内部类
+
+  + 可以在方法中局部地定义这个类
+  + 声明局部内部类的时候不能有访问说明符
+  + 对外界世界完全隐藏
+
++ #### 6.3.5 由外部方法访问变量
+
+  + 局部类不仅能够访问外部类的字段，还可以访问局部变量，即定义这个局部类方法接受的参数
+
++ #### 6.3.6 匿名内部类
+
+  + 语法如下
+
+  + ```java
+    var name = new SuperType(construction parameters){
+        inner class methods and data;
+    }
+    ```
+
+  + SuperType可以是一个接口或者一个超类
+
+  + 由于构造器名字要和类名相同，所以匿名内部类没有构造器，实际上如果SuperType是一个类，还是需要给超类传递构造器参数，所以需要在SuperType后面增加小括号
+
+  + ```java
+    var queen = new Person("Mary");
+    var count = new Person("Dracula"){...}；//在构造一个匿名内部类
+    ```
+
+  + 匿名类可以有对象初始化块儿{}
+
++ #### 6.3.7 静态内部类
+
+  + 如果不需要对外围类对象的引用，就可以把内部类声明为static，就不会生成那个引用
+
+
+
